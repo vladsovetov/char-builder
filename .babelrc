@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "razzle/babel",
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
+  ]
+}
