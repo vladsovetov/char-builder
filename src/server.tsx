@@ -2,6 +2,7 @@ import { StaticRouter } from 'react-router-dom'
 import express from 'express'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import { ServerStyleSheet } from 'styled-components'
 
 import App from 'app/App'
 import { getConfiguredStore } from 'app/store'
@@ -17,15 +18,19 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', (req, res) => {
+    const sheet = new ServerStyleSheet()
     const context: Context = {}
     const store = getConfiguredStore()
     const markup = renderToString(
-      <Provider store={store}>
-        <StaticRouter context={context} location={req.url}>
-          <App />
-        </StaticRouter>
-      </Provider>
+      sheet.collectStyles(
+        <Provider store={store}>
+          <StaticRouter context={context} location={req.url}>
+            <App />
+          </StaticRouter>
+        </Provider>
+      )
     )
+    const styleTags = sheet.getStyleTags()
 
     if (context.url) {
       res.redirect(context.url)
@@ -43,6 +48,7 @@ server
             ? `<link rel="stylesheet" href="${assets.client.css}">`
             : ''
         }
+        ${styleTags}
         ${
           process.env.NODE_ENV === 'production'
             ? `<script src="${assets.client.js}" defer></script>`
