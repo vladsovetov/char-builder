@@ -6,7 +6,8 @@
     "jsx": "react-jsx",
     "noImplicitAny": true,
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
   "include": ["src"]
 }
