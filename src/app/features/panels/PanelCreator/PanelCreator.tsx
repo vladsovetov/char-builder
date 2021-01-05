@@ -1,4 +1,14 @@
 import { useState } from 'react'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  max-width: 10rem;
+  width: 100%;
+
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.primary};
+  max-width: 40rem;
+`
 
 export const PanelCreator = () => {
   const [elements, setElements] = useState<number[]>([])
@@ -6,7 +16,7 @@ export const PanelCreator = () => {
     setElements([1])
   }
   return (
-    <div
+    <Wrapper
       data-testid="panel-creator"
       onTouchStart={handleAddElement}
       onClick={handleAddElement}
@@ -14,6 +24,6 @@ export const PanelCreator = () => {
       {elements.map((element, index) => (
         <div key={index}></div>
       ))}
-    </div>
+    </Wrapper>
   )
 }

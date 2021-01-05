@@ -2,7 +2,9 @@ import { FC, ReactElement } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { render, RenderOptions } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { ThemeProvider } from 'styled-components'
 
+import { theme } from 'app/theme'
 import { getConfiguredStore, RootState } from 'app/store'
 
 type Options = Omit<RenderOptions, 'queries'> & {
@@ -25,7 +27,9 @@ export const renderWithProviders = (
     }
     return (
       <Provider store={store}>
-        <BrowserRouter>{children}</BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>{children}</BrowserRouter>
+        </ThemeProvider>
       </Provider>
     )
   }

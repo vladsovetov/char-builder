@@ -1,13 +1,13 @@
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 
-import { test } from 'app/store/panels/panelsSlice'
+// import { test } from 'app/store/panels/panelsSlice'
+import { PanelCreator } from 'app/features/panels/PanelCreator'
 
 export const AdminPage = () => {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   return (
-    <div>
-      Admin page
-      <button onClick={() => dispatch(test())}>increment</button>
+    <div data-testid="admin-page">
+      <PanelCreator />
     </div>
   )
 }
