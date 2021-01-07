@@ -7,7 +7,7 @@ import { ServerStyleSheet } from 'styled-components'
 import App from 'app/App'
 import { getConfiguredStore } from 'app/store'
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST || '')
 
 type Context = {
   url?: string
@@ -16,7 +16,7 @@ type Context = {
 const server = express()
 server
   .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR || ''))
   .get('/*', (req, res) => {
     const sheet = new ServerStyleSheet()
     const context: Context = {}

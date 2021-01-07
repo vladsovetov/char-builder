@@ -4,7 +4,7 @@ let app = require('./server').default
 
 if (module.hot) {
   module.hot.accept('./server', function () {
-    console.log('🔁  HMR Reloading `./server`...')
+    console.info('🔁  HMR Reloading `./server`...')
     try {
       app = require('./server').default
     } catch (error) {
@@ -24,5 +24,5 @@ export default express()
       console.error(err)
       return
     }
-    console.log(`> Started on port ${port}`)
+    console.info(`> Started on port ${port}`)
   })

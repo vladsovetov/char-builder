@@ -6,5 +6,5 @@ it('renders admin page', () => {
     route: '/admin'
   })
 
-  expect(screen.getByText('Admin page')).toBeInTheDocument()
+  expect(screen.getByTestId('admin-page')).toBeInTheDocument()
 })
