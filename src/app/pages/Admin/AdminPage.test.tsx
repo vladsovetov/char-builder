@@ -10,6 +10,12 @@ it('renders a component', async () => {
   expect(screen.getByTestId(containerId)).toBeInTheDocument()
 })
 
+it('renders PageWrapper component', async () => {
+  renderWithProviders(<AdminPage />)
+
+  expect(screen.getByTestId('page-wrapper')).toBeInTheDocument()
+})
+
 it('renders PanelCreator component', async () => {
   renderWithProviders(<AdminPage />)
 
