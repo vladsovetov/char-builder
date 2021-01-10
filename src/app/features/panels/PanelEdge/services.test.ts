@@ -1,5 +1,5 @@
 import { Point } from './PanelEdge'
-import { getOffsetByAllowedDirection } from './services'
+import { getRectDiffBetweenPointsByPosition } from './services'
 
 const startPoint: Point = {
   x: 0,
@@ -26,116 +26,186 @@ const moveLeftPoint: Point = {
   y: 0
 }
 
-describe('top direction', () => {
-  it('returns vertical offset on top move', () => {
+describe('top position', () => {
+  it('returns vertical offset and increases height on top move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveTopPoint, 'top')
+      getRectDiffBetweenPointsByPosition(startPoint, moveTopPoint, 'top')
     ).toStrictEqual({
       ...startPoint,
-      y: moveTopPoint.y
+      y: moveTopPoint.y,
+      width: 0,
+      height: Math.abs(moveTopPoint.y)
     })
   })
 
-  it('returns vertical offset on bottom move', () => {
+  it('returns vertical offset and decreases height on bottom move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveBottomPoint, 'top')
+      getRectDiffBetweenPointsByPosition(startPoint, moveBottomPoint, 'top')
     ).toStrictEqual({
       ...startPoint,
-      y: moveBottomPoint.y
+      y: moveBottomPoint.y,
+      width: 0,
+      height: Math.abs(moveBottomPoint.y) * -1
     })
   })
 
-  it('returns zero vertical offset on right move', () => {
+  it('returns zero vertical offset and does not change height on right move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveRightPoint, 'top')
+      getRectDiffBetweenPointsByPosition(startPoint, moveRightPoint, 'top')
     ).toStrictEqual({
       ...startPoint,
-      y: moveRightPoint.y
+      y: moveRightPoint.y,
+      width: 0,
+      height: 0
     })
   })
 
-  it('returns zero vertical offset on left move', () => {
+  it('returns zero vertical offset and does not change height on left move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveLeftPoint, 'top')
+      getRectDiffBetweenPointsByPosition(startPoint, moveLeftPoint, 'top')
     ).toStrictEqual({
       ...startPoint,
-      y: moveLeftPoint.y
-    })
-  })
-})
-
-describe('bottom direction', () => {
-  it('returns vertical offset on top move', () => {
-    expect(
-      getOffsetByAllowedDirection(startPoint, moveTopPoint, 'bottom')
-    ).toStrictEqual({
-      ...startPoint,
-      y: moveTopPoint.y
-    })
-  })
-
-  it('returns vertical offset on bottom move', () => {
-    expect(
-      getOffsetByAllowedDirection(startPoint, moveBottomPoint, 'bottom')
-    ).toStrictEqual({
-      ...startPoint,
-      y: moveBottomPoint.y
-    })
-  })
-
-  it('returns zero vertical offset on right move', () => {
-    expect(
-      getOffsetByAllowedDirection(startPoint, moveRightPoint, 'bottom')
-    ).toStrictEqual({
-      ...startPoint,
-      y: moveRightPoint.y
-    })
-  })
-
-  it('returns zero vertical offset on left move', () => {
-    expect(
-      getOffsetByAllowedDirection(startPoint, moveLeftPoint, 'bottom')
-    ).toStrictEqual({
-      ...startPoint,
-      y: moveLeftPoint.y
+      y: moveLeftPoint.y,
+      width: 0,
+      height: 0
     })
   })
 })
 
-describe('left direction', () => {
-  it('returns horizontal offset on left move', () => {
+describe('bottom position', () => {
+  it('returns vertical offset and decreases height on top move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveLeftPoint, 'left')
+      getRectDiffBetweenPointsByPosition(startPoint, moveTopPoint, 'bottom')
     ).toStrictEqual({
       ...startPoint,
-      x: moveLeftPoint.x
+      y: 0,
+      width: 0,
+      height: Math.abs(moveTopPoint.y) * -1
     })
   })
 
-  it('returns horizontal offset on right move', () => {
+  it('returns vertical offset and increases height on bottom move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveRightPoint, 'left')
+      getRectDiffBetweenPointsByPosition(startPoint, moveBottomPoint, 'bottom')
     ).toStrictEqual({
       ...startPoint,
-      x: moveRightPoint.x
+      y: 0,
+      width: 0,
+      height: Math.abs(moveBottomPoint.y)
     })
   })
 
-  it('returns zero horizontal offset on top move', () => {
+  it('returns zero vertical offset and does not change height on right move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveTopPoint, 'left')
+      getRectDiffBetweenPointsByPosition(startPoint, moveRightPoint, 'bottom')
     ).toStrictEqual({
       ...startPoint,
-      x: moveTopPoint.x
+      y: 0,
+      width: 0,
+      height: 0
     })
   })
 
-  it('returns zero horizontal offset on bottom move', () => {
+  it('returns zero vertical offset and does not change height on left move', () => {
     expect(
-      getOffsetByAllowedDirection(startPoint, moveBottomPoint, 'left')
+      getRectDiffBetweenPointsByPosition(startPoint, moveLeftPoint, 'bottom')
     ).toStrictEqual({
       ...startPoint,
-      x: moveBottomPoint.x
+      y: 0,
+      width: 0,
+      height: 0
+    })
+  })
+})
+
+describe('left position', () => {
+  it('returns horizontal offset and increases width on left move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveLeftPoint, 'left')
+    ).toStrictEqual({
+      ...startPoint,
+      x: moveLeftPoint.x,
+      width: Math.abs(moveLeftPoint.x),
+      height: 0
+    })
+  })
+
+  it('returns horizontal offset and decreases width on right move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveRightPoint, 'left')
+    ).toStrictEqual({
+      ...startPoint,
+      x: moveRightPoint.x,
+      width: Math.abs(moveRightPoint.x) * -1,
+      height: 0
+    })
+  })
+
+  it('returns zero horizontal offset and does not change width on top move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveTopPoint, 'left')
+    ).toStrictEqual({
+      ...startPoint,
+      x: moveTopPoint.x,
+      width: 0,
+      height: 0
+    })
+  })
+
+  it('returns zero horizontal offset and does not change width on bottom move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveBottomPoint, 'left')
+    ).toStrictEqual({
+      ...startPoint,
+      x: moveBottomPoint.x,
+      width: 0,
+      height: 0
+    })
+  })
+})
+
+describe('right position', () => {
+  it('returns horizontal offset and decreases width on left move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveLeftPoint, 'right')
+    ).toStrictEqual({
+      ...startPoint,
+      x: 0,
+      width: Math.abs(moveLeftPoint.x) * -1,
+      height: 0
+    })
+  })
+
+  it('returns horizontal offset and increases width on right move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveRightPoint, 'right')
+    ).toStrictEqual({
+      ...startPoint,
+      x: 0,
+      width: Math.abs(moveRightPoint.x),
+      height: 0
+    })
+  })
+
+  it('returns zero horizontal offset and does not change width on top move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveTopPoint, 'right')
+    ).toStrictEqual({
+      ...startPoint,
+      x: 0,
+      width: 0,
+      height: 0
+    })
+  })
+
+  it('returns zero horizontal offset and does not change width on bottom move', () => {
+    expect(
+      getRectDiffBetweenPointsByPosition(startPoint, moveBottomPoint, 'right')
+    ).toStrictEqual({
+      ...startPoint,
+      x: 0,
+      width: 0,
+      height: 0
     })
   })
 })
