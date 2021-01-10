@@ -7,7 +7,7 @@
       "jsx": true
     }
   },
-
+  "plugins": ["react-hooks"],
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
@@ -21,6 +21,8 @@
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/ban-ts-comment": "warn",
-    "no-console": ["warn", { "allow": ["warn", "error", "info"] }]
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

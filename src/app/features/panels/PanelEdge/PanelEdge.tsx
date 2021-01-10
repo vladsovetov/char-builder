@@ -1,7 +1,8 @@
-import { FC, useState, MouseEvent } from 'react'
+import { FC, useState, useEffect, useCallback } from 'react'
 import styled, { css } from 'styled-components'
 
-import { getOffsetByAllowedDirection } from './services'
+import { PanelRect } from 'app/features/panels/PanelCreator'
+import { getRectDiffBetweenPointsByPosition } from './services'
 
 export const dataTestIds = {
   container: 'panel-edge'
@@ -47,12 +48,12 @@ export type Point = {
   y: number
 }
 
-export type MoveDirection = 'top' | 'right' | 'bottom' | 'left'
+export type Position = 'top' | 'right' | 'bottom' | 'left'
 
 export type PanelEdgeProps = {
-  position: MoveDirection
+  position: Position
   thickness?: number
-  onMove: (offset: Point) => void
+  onMove: (offset: PanelRect) => void
 }
 
 export const PanelEdge: FC<PanelEdgeProps> = ({
@@ -62,32 +63,51 @@ export const PanelEdge: FC<PanelEdgeProps> = ({
   ...rest
 }) => {
   const [capturedPoint, setCapturedPoint] = useState<Point | null>(null)
+  const handleMove = useCallback(
+    (event: MouseEvent) => {
+      if (capturedPoint) {
+        const { clientX, clientY } = event
+        const moveToPoint = {
+          x: clientX,
+          y: clientY
+        }
+        setCapturedPoint(moveToPoint)
+        onMove(
+          getRectDiffBetweenPointsByPosition(
+            capturedPoint,
+            moveToPoint,
+            position
+          )
+        )
+      }
+    },
+    [capturedPoint, onMove, position]
+  )
 
-  const handleCapture = (event: MouseEvent<HTMLElement>) => {
+  const handleUncapture = useCallback(() => {
+    setCapturedPoint(null)
+  }, [])
+
+  const handleCapture = useCallback((event: React.MouseEvent<HTMLElement>) => {
     const { clientX, clientY } = event
     setCapturedPoint({ x: clientX, y: clientY })
-  }
-  const handleUncapture = () => {
-    setCapturedPoint(null)
-  }
-  const handleMove = (event: MouseEvent<HTMLElement>) => {
-    if (capturedPoint) {
-      const moveToPoint = {
-        x: event.clientX,
-        y: event.clientY
-      }
-      setCapturedPoint(moveToPoint)
-      onMove(getOffsetByAllowedDirection(capturedPoint, moveToPoint, position))
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMove)
+    document.addEventListener('mouseup', handleUncapture)
+    return () => {
+      document.removeEventListener('mousemove', handleMove)
+      document.removeEventListener('mouseup', handleUncapture)
     }
-  }
+  }, [handleMove, handleUncapture])
+
   return (
     <Wrapper
       data-testid={dataTestIds.container}
       position={position}
       thickness={thickness}
       onMouseDown={handleCapture}
-      onMouseUp={handleUncapture}
-      onMouseMove={handleMove}
       {...rest}
     ></Wrapper>
   )
