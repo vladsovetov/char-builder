@@ -5,8 +5,8 @@ import userEvent from '@testing-library/user-event'
 import { PanelCreator, dataTestIds, PanelRect } from './PanelCreator'
 
 const panelRect: PanelRect = {
-  x: 0,
-  y: 0,
+  x: 100,
+  y: 100,
   width: 300,
   height: 700
 }
@@ -54,45 +54,45 @@ it('shrinks height and moves below on dragging top edge to the bottom', async ()
   fireEvent.mouseDown(topEdge)
   fireEvent.mouseMove(topEdge, {
     clientX: 0,
-    clientY: moveOffset
+    clientY: panelRect.y + moveOffset
   })
 
   const container = screen.getByTestId(dataTestIds.container)
   expect(container).toHaveStyle(
-    `transform: translate(0px, ${moveOffset}px); height: ${
+    `transform: translate(100px, ${panelRect.y + moveOffset}px); height: ${
       panelRect.height - moveOffset
     }px`
   )
 })
 
 it('shrinks height on dragging bottom edge to the top', async () => {
-  const moveOffset = -100
+  const moveOffset = 100
   renderWithProviders(<PanelCreator {...panelRect} />)
 
   const bottomEdge = screen.getByTestId(dataTestIds.edges.bottom)
   fireEvent.mouseDown(bottomEdge)
   fireEvent.mouseMove(bottomEdge, {
     clientX: 0,
-    clientY: moveOffset
+    clientY: panelRect.y + panelRect.height - moveOffset
   })
 
   const container = screen.getByTestId(dataTestIds.container)
-  expect(container).toHaveStyle(`height: ${panelRect.height + moveOffset}px`)
+  expect(container).toHaveStyle(`height: ${panelRect.height - moveOffset}px`)
 })
 
 it('shrinks width on dragging right edge to the left', async () => {
-  const moveOffset = -100
+  const moveOffset = 100
   renderWithProviders(<PanelCreator {...panelRect} />)
 
   const rightEdge = screen.getByTestId(dataTestIds.edges.right)
   fireEvent.mouseDown(rightEdge)
   fireEvent.mouseMove(rightEdge, {
-    clientX: moveOffset,
+    clientX: panelRect.x + panelRect.width - moveOffset,
     clientY: 0
   })
 
   const container = screen.getByTestId(dataTestIds.container)
-  expect(container).toHaveStyle(`width: ${panelRect.width + moveOffset}px`)
+  expect(container).toHaveStyle(`width: ${panelRect.width - moveOffset}px`)
 })
 
 it('shrinks width and shifts to the right on dragging left edge to the right', async () => {
@@ -102,13 +102,13 @@ it('shrinks width and shifts to the right on dragging left edge to the right', a
   const leftEdge = screen.getByTestId(dataTestIds.edges.left)
   fireEvent.mouseDown(leftEdge)
   fireEvent.mouseMove(leftEdge, {
-    clientX: moveOffset,
+    clientX: panelRect.x + moveOffset,
     clientY: 0
   })
 
   const container = screen.getByTestId(dataTestIds.container)
   expect(container).toHaveStyle(
-    `transform: translate(${moveOffset}px, 0px); width: ${
+    `transform: translate(${panelRect.x + moveOffset}px, 100px); width: ${
       panelRect.width - moveOffset
     }px`
   )

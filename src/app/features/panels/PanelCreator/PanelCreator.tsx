@@ -1,14 +1,11 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
 
-import { PanelEdge } from 'app/features/panels/PanelEdge'
+import { PanelEdge, Point, Position } from 'app/features/panels/PanelEdge'
+import { getPanelRectOnEdgeMove } from './services'
 
 const Wrapper = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
-  max-width: 40rem;
-  max-height: 100rem;
   background-color: ${({ theme }) => theme.colors.primary};
 `
 const dataTestIdPrefix = 'panel-creator'
@@ -55,13 +52,9 @@ export const PanelCreator: FC<PanelCreatorProps> = ({
     setElements([1])
   }
 
-  const handleEdgeMove = (rectDiff: PanelRect) => {
-    setPanelRect(({ x, y, width, height }) => ({
-      x: x + rectDiff.x,
-      y: y + rectDiff.y,
-      width: width + rectDiff.width,
-      height: height + rectDiff.height
-    }))
+  const handleEdgeMove = (point: Point, edgePosition: Position) => {
+    const newPanelRect = getPanelRectOnEdgeMove(panelRect, point, edgePosition)
+    setPanelRect(newPanelRect)
   }
 
   return (

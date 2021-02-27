@@ -1,9 +1,6 @@
 import { FC, useState, useEffect, useCallback } from 'react'
 import styled, { css } from 'styled-components'
 
-import { PanelRect } from 'app/features/panels/PanelCreator'
-import { getRectDiffBetweenPointsByPosition } from './services'
-
 export const dataTestIds = {
   container: 'panel-edge'
 }
@@ -11,7 +8,6 @@ export const dataTestIds = {
 const Wrapper = styled.div<Pick<PanelEdgeProps, 'position' | 'thickness'>>`
   position: absolute;
   background-color: ${({ theme }) => theme.colors.secondary};
-  cursor: row-resize;
 
   ${({ position, thickness }) => {
     switch (position) {
@@ -20,24 +16,28 @@ const Wrapper = styled.div<Pick<PanelEdgeProps, 'position' | 'thickness'>>`
           top: 0;
           width: 100%;
           height: ${thickness}px;
+          cursor: row-resize;
         `
       case 'right':
         return css`
           right: 0;
           width: ${thickness}px;
           height: 100%;
+          cursor: col-resize;
         `
       case 'bottom':
         return css`
           bottom: 0;
           width: 100%;
           height: ${thickness}px;
+          cursor: row-resize;
         `
       case 'left':
         return css`
           left: 0;
           width: ${thickness}px;
           height: 100%;
+          cursor: col-resize;
         `
     }
   }}
@@ -53,7 +53,7 @@ export type Position = 'top' | 'right' | 'bottom' | 'left'
 export type PanelEdgeProps = {
   position: Position
   thickness?: number
-  onMove: (offset: PanelRect) => void
+  onMove: (point: Point, edgePosition: Position) => void
 }
 
 export const PanelEdge: FC<PanelEdgeProps> = ({
@@ -71,14 +71,7 @@ export const PanelEdge: FC<PanelEdgeProps> = ({
           x: clientX,
           y: clientY
         }
-        setCapturedPoint(moveToPoint)
-        onMove(
-          getRectDiffBetweenPointsByPosition(
-            capturedPoint,
-            moveToPoint,
-            position
-          )
-        )
+        onMove(moveToPoint, position)
       }
     },
     [capturedPoint, onMove, position]
