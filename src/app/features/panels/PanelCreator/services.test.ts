@@ -1,4 +1,4 @@
-import { PanelRect } from './PanelCreator'
+import { PanelRect } from 'app/store/panels'
 import { getPanelRectOnEdgeMove } from './services'
 
 const panel: PanelRect = {

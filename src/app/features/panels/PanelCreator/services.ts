@@ -1,5 +1,5 @@
 import { Point, Position } from '../PanelEdge'
-import { PanelRect } from './PanelCreator'
+import { PanelRect } from 'app/store/panels'
 
 export const getPanelRectOnEdgeMove = (
   panelRect: PanelRect,

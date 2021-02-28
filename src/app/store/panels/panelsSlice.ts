@@ -1,17 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import { Panel, PanelsState } from './types'
+
+export const initialState: PanelsState = {
+  activePanelId: '',
+  items: []
+}
 
 const panelsSlice = createSlice({
   name: 'panels',
-  initialState: {
-    counter: 0
-  },
+  initialState,
   reducers: {
-    test(state) {
-      state.counter++
+    setActivePanelId(state, action: PayloadAction<string>) {
+      state.activePanelId = action.payload
+    },
+    addPanel(state, action: PayloadAction<Panel>) {
+      state.items.push(action.payload)
     }
   }
 })
 
-export const { test } = panelsSlice.actions
+export const { setActivePanelId, addPanel } = panelsSlice.actions
 
 export default panelsSlice.reducer

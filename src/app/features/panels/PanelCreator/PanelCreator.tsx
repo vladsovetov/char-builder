@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
 
+import { Panel, PanelRect } from 'app/store/panels'
 import { PanelEdge, Point, Position } from 'app/features/panels/PanelEdge'
 import { getPanelRectOnEdgeMove } from './services'
 
@@ -8,6 +9,7 @@ const Wrapper = styled.div`
   position: absolute;
   background-color: ${({ theme }) => theme.colors.primary};
 `
+
 const dataTestIdPrefix = 'panel-creator'
 export const dataTestIds = {
   container: dataTestIdPrefix,
@@ -21,25 +23,8 @@ export const dataTestIds = {
   }
 }
 
-export type PanelRect = {
-  x: number
-  y: number
-  width: number
-  height: number
-}
-
-type PanelCreatorProps = {
-  x?: number
-  y?: number
-  width?: number
-  height?: number
-}
-
-export const PanelCreator: FC<PanelCreatorProps> = ({
-  x = 0,
-  y = 0,
-  width = 400,
-  height = 600
+export const PanelCreator: FC<Panel> = ({
+  rect: { x = 0, y = 0, width = 400, height = 600 }
 }) => {
   const [panelRect, setPanelRect] = useState<PanelRect>({
     x,

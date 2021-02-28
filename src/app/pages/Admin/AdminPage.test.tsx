@@ -17,7 +17,24 @@ it('renders PageWrapper component', async () => {
 })
 
 it('renders PanelCreator component', async () => {
-  renderWithProviders(<AdminPage />)
+  renderWithProviders(<AdminPage />, {
+    initialState: {
+      panels: {
+        activePanelId: '123',
+        items: [
+          {
+            id: '123',
+            rect: {
+              x: 100,
+              y: 100,
+              height: 100,
+              width: 100
+            }
+          }
+        ]
+      }
+    }
+  })
 
   expect(screen.getByTestId('panel-creator')).toBeInTheDocument()
 })
