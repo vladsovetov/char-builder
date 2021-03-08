@@ -2,10 +2,11 @@ import { renderWithProviders, screen } from 'app/utils/testUtils'
 import { fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Panel } from 'app/store/panels'
-import { PanelCreator, dataTestIds } from './Panel'
+import { PanelType } from 'app/store/panels'
+import { Panel, dataTestIds } from './Panel'
+import { theme } from 'app/theme'
 
-const panel: Panel = {
+const panel: PanelType = {
   id: '123',
   rect: {
     x: 100,
@@ -16,33 +17,14 @@ const panel: Panel = {
 }
 
 it('renders a component', async () => {
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   expect(screen.getByTestId(dataTestIds.container)).toBeInTheDocument()
   expect(screen.getByTestId(dataTestIds.container)).toBeInTheDocument()
-})
-
-it('adds a new component on tap', async () => {
-  renderWithProviders(<PanelCreator {...panel} />)
-  const element = screen.getByTestId(dataTestIds.elementsContainer)
-
-  fireEvent.touchStart(element)
-  fireEvent.touchEnd(element)
-
-  expect(element.childElementCount).toBe(1)
-})
-
-it('adds a new panel on click', async () => {
-  renderWithProviders(<PanelCreator {...panel} />)
-  const element = screen.getByTestId(dataTestIds.elementsContainer)
-
-  userEvent.click(element)
-
-  expect(element.childElementCount).toBe(1)
 })
 
 it('renders panel with specified size', async () => {
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   const container = screen.getByTestId(dataTestIds.container)
 
@@ -52,7 +34,7 @@ it('renders panel with specified size', async () => {
 
 it('shrinks height and moves below on dragging top edge to the bottom', async () => {
   const moveOffset = 100
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   const topEdge = screen.getByTestId(dataTestIds.edges.top)
   fireEvent.mouseDown(topEdge)
@@ -71,7 +53,7 @@ it('shrinks height and moves below on dragging top edge to the bottom', async ()
 
 it('shrinks height on dragging bottom edge to the top', async () => {
   const moveOffset = 100
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   const bottomEdge = screen.getByTestId(dataTestIds.edges.bottom)
   fireEvent.mouseDown(bottomEdge)
@@ -86,7 +68,7 @@ it('shrinks height on dragging bottom edge to the top', async () => {
 
 it('shrinks width on dragging right edge to the left', async () => {
   const moveOffset = 100
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   const rightEdge = screen.getByTestId(dataTestIds.edges.right)
   fireEvent.mouseDown(rightEdge)
@@ -101,7 +83,7 @@ it('shrinks width on dragging right edge to the left', async () => {
 
 it('shrinks width and shifts to the right on dragging left edge to the right', async () => {
   const moveOffset = 100
-  renderWithProviders(<PanelCreator {...panel} />)
+  renderWithProviders(<Panel {...panel} />)
 
   const leftEdge = screen.getByTestId(dataTestIds.edges.left)
   fireEvent.mouseDown(leftEdge)
@@ -116,4 +98,24 @@ it('shrinks width and shifts to the right on dragging left edge to the right', a
       panel.rect.width - moveOffset
     }px`
   )
+})
+
+it('on click activate the panel', async () => {
+  const handleClick = jest.fn()
+  renderWithProviders(<Panel {...panel} onClick={handleClick} />)
+
+  const container = screen.getByTestId(dataTestIds.container)
+  userEvent.click(container)
+
+  expect(handleClick).toBeCalled()
+})
+
+it('makes all PanelEdges as active if panel is active', async () => {
+  renderWithProviders(<Panel {...panel} active />)
+
+  const activeColor = theme.colors.blue
+  for (const edgeSelector of Object.values(dataTestIds.edges)) {
+    const edge = screen.getByTestId(edgeSelector)
+    expect(edge).toHaveStyle(`background-color: ${activeColor}`)
+  }
 })

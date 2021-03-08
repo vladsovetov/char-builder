@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { Panel, PanelsState } from './types'
+import { PanelType, PanelsState } from './types'
 
 export const initialState: PanelsState = {
   activePanelId: '',
@@ -14,7 +14,7 @@ const panelsSlice = createSlice({
     setActivePanelId(state, action: PayloadAction<string>) {
       state.activePanelId = action.payload
     },
-    addPanel(state, action: PayloadAction<Panel>) {
+    addPanel(state, action: PayloadAction<PanelType>) {
       state.items.push(action.payload)
     }
   }

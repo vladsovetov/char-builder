@@ -1,4 +1,4 @@
-export type Panel = {
+export type PanelType = {
   id: string
   rect: PanelRect
 }
@@ -12,5 +12,5 @@ export type PanelRect = {
 
 export interface PanelsState {
   activePanelId: string
-  items: Panel[]
+  items: PanelType[]
 }

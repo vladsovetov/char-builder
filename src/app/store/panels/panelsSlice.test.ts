@@ -1,4 +1,4 @@
-import { Panel } from './types'
+import { PanelType } from './types'
 import reducer, {
   addPanel,
   initialState,

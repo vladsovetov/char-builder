@@ -5,9 +5,12 @@ export const dataTestIds = {
   container: 'panel-edge'
 }
 
-const Wrapper = styled.div<Pick<PanelEdgeProps, 'position' | 'thickness'>>`
+const Wrapper = styled.div<
+  Pick<PanelEdgeProps, 'position' | 'thickness' | 'active'>
+>`
   position: absolute;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.blue : theme.colors.secondary};
 
   ${({ position, thickness }) => {
     switch (position) {
@@ -52,14 +55,16 @@ export type Position = 'top' | 'right' | 'bottom' | 'left'
 
 export type PanelEdgeProps = {
   position: Position
-  thickness?: number
   onMove: (point: Point, edgePosition: Position) => void
+  thickness?: number
+  active?: boolean
 }
 
 export const PanelEdge: FC<PanelEdgeProps> = ({
-  thickness = 6,
+  thickness = 2,
   position,
   onMove,
+  active,
   ...rest
 }) => {
   const [capturedPoint, setCapturedPoint] = useState<Point | null>(null)
@@ -101,6 +106,7 @@ export const PanelEdge: FC<PanelEdgeProps> = ({
       position={position}
       thickness={thickness}
       onMouseDown={handleCapture}
+      active={active}
       {...rest}
     ></Wrapper>
   )

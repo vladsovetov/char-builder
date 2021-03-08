@@ -16,7 +16,7 @@ it('renders PageWrapper component', async () => {
   expect(screen.getByTestId('page-wrapper')).toBeInTheDocument()
 })
 
-it('renders PanelCreator component', async () => {
+it('renders Panel component', async () => {
   renderWithProviders(<AdminPage />, {
     initialState: {
       panels: {

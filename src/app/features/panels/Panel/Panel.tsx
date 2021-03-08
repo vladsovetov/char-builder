@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
 
-import { Panel, PanelRect } from 'app/store/panels'
+import { PanelType, PanelRect } from 'app/store/panels'
 import { PanelEdge, Point, Position } from 'app/features/panels/PanelEdge'
 import { getPanelRectOnEdgeMove } from './services'
 
@@ -10,10 +10,9 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
 `
 
-const dataTestIdPrefix = 'panel-creator'
+const dataTestIdPrefix = 'panel'
 export const dataTestIds = {
   container: dataTestIdPrefix,
-  elementsContainer: `${dataTestIdPrefix}-elements`,
   edgesContainer: `${dataTestIdPrefix}-edges`,
   edges: {
     top: `${dataTestIdPrefix}-top-edge`,
@@ -23,8 +22,16 @@ export const dataTestIds = {
   }
 }
 
-export const PanelCreator: FC<Panel> = ({
-  rect: { x = 0, y = 0, width = 400, height = 600 }
+type PanelProps = PanelType & {
+  onClick?: (id: string) => void
+  active?: boolean
+}
+
+export const Panel: FC<PanelProps> = ({
+  rect: { x = 0, y = 0, width = 400, height = 600 },
+  active = false,
+  onClick,
+  ...props
 }) => {
   const [panelRect, setPanelRect] = useState<PanelRect>({
     x,
@@ -32,9 +39,8 @@ export const PanelCreator: FC<Panel> = ({
     width,
     height
   })
-  const [elements, setElements] = useState<number[]>([])
-  const handleAddElement = () => {
-    setElements([1])
+  const handleClick = () => {
+    onClick && onClick(props.id)
   }
 
   const handleEdgeMove = (point: Point, edgePosition: Position) => {
@@ -45,8 +51,8 @@ export const PanelCreator: FC<Panel> = ({
   return (
     <Wrapper
       data-testid={dataTestIds.container}
-      onTouchStart={handleAddElement}
-      onClick={handleAddElement}
+      onTouchStart={handleClick}
+      onClick={handleClick}
       style={{
         transform: `translate(${panelRect.x}px, ${panelRect.y}px)`,
         width: `${panelRect.width}px`,
@@ -58,27 +64,26 @@ export const PanelCreator: FC<Panel> = ({
           data-testid={dataTestIds.edges.top}
           position="top"
           onMove={handleEdgeMove}
+          active={active}
         />
         <PanelEdge
           data-testid={dataTestIds.edges.right}
           position="right"
           onMove={handleEdgeMove}
+          active={active}
         />
         <PanelEdge
           data-testid={dataTestIds.edges.bottom}
           position="bottom"
           onMove={handleEdgeMove}
+          active={active}
         />
         <PanelEdge
           data-testid={dataTestIds.edges.left}
           position="left"
           onMove={handleEdgeMove}
+          active={active}
         />
-      </div>
-      <div data-testid={dataTestIds.elementsContainer}>
-        {elements.map((element, index) => (
-          <div key={index}></div>
-        ))}
       </div>
     </Wrapper>
   )

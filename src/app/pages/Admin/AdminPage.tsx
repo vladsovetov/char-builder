@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addPanel, panelsSelector } from 'app/store/panels'
+import {
+  addPanel,
+  panelsSelector,
+  setActivePanelId,
+  activePanelIdSelector
+} from 'app/store/panels'
 import { PageWrapper } from 'app/components/PageWrapper'
-import { PanelCreator } from 'app/features/panels/Panel'
+import { Panel } from 'app/features/panels/Panel'
 import { PanelEditor } from 'app/features/panels/PanelEditor'
 
 export const AdminPage = () => {
   const dispatch = useDispatch()
   const panels = useSelector(panelsSelector)
+  const activePanelId = useSelector(activePanelIdSelector)
   const [openedPanelEditor, setOpenedPanelEditor] = useState(false)
 
   const handleAddPanel = () => {
@@ -20,6 +26,10 @@ export const AdminPage = () => {
     )
   }
 
+  const handlePanelClick = (id: string) => {
+    dispatch(setActivePanelId(id))
+  }
+
   return (
     <div data-testid="admin-page">
       <PageWrapper>
@@ -28,7 +38,12 @@ export const AdminPage = () => {
           toggle panel editor
         </button>
         {panels.map(panel => (
-          <PanelCreator key={panel.id} {...panel} />
+          <Panel
+            key={panel.id}
+            active={activePanelId === panel.id}
+            onClick={handlePanelClick}
+            {...panel}
+          />
         ))}
 
         <PanelEditor open={openedPanelEditor} />
