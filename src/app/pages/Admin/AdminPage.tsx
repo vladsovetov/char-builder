@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -11,11 +10,16 @@ import { PageWrapper } from 'app/components/PageWrapper'
 import { Panel } from 'app/features/panels/Panel'
 import { PanelEditor } from 'app/features/panels/PanelEditor'
 
+const dataTestIdPrefix = 'admin-page'
+export const dataTestIds = {
+  container: dataTestIdPrefix,
+  addPanelButton: `${dataTestIdPrefix}-add-panel`
+}
+
 export const AdminPage = () => {
   const dispatch = useDispatch()
   const panels = useSelector(panelsSelector)
   const activePanelId = useSelector(activePanelIdSelector)
-  const [openedPanelEditor, setOpenedPanelEditor] = useState(false)
 
   const handleAddPanel = () => {
     dispatch(
@@ -31,11 +35,13 @@ export const AdminPage = () => {
   }
 
   return (
-    <div data-testid="admin-page">
+    <div data-testid={dataTestIds.container}>
       <PageWrapper>
-        <button onClick={handleAddPanel}>Add panel</button>
-        <button onClick={() => setOpenedPanelEditor(prev => !prev)}>
-          toggle panel editor
+        <button
+          data-testid={dataTestIds.addPanelButton}
+          onClick={handleAddPanel}
+        >
+          Add panel
         </button>
         {panels.map(panel => (
           <Panel
@@ -46,7 +52,7 @@ export const AdminPage = () => {
           />
         ))}
 
-        <PanelEditor open={openedPanelEditor} />
+        <PanelEditor open={!!activePanelId} />
       </PageWrapper>
     </div>
   )

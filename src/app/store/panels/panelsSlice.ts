@@ -12,7 +12,8 @@ const panelsSlice = createSlice({
   initialState,
   reducers: {
     setActivePanelId(state, action: PayloadAction<string>) {
-      state.activePanelId = action.payload
+      state.activePanelId =
+        state.activePanelId === action.payload ? '' : action.payload
     },
     addPanel(state, action: PayloadAction<PanelType>) {
       state.items.push(action.payload)

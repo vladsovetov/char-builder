@@ -13,8 +13,21 @@ test('set active panel id', () => {
   })
 })
 
+test('unset active panel id on second activate', () => {
+  const panelId = '123'
+  expect(
+    reducer(
+      { ...initialState, activePanelId: panelId },
+      setActivePanelId(panelId)
+    )
+  ).toEqual({
+    ...initialState,
+    activePanelId: ''
+  })
+})
+
 test('add a new panel', () => {
-  const panel: Panel = {
+  const panel: PanelType = {
     id: '123',
     rect: {
       x: 100,
