@@ -3,7 +3,7 @@ import { fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { Panel } from 'app/store/panels'
-import { PanelCreator, dataTestIds } from './PanelCreator'
+import { PanelCreator, dataTestIds } from './Panel'
 
 const panel: Panel = {
   id: '123',

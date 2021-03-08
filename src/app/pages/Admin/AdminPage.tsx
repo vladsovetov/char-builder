@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { addPanel, panelsSelector } from 'app/store/panels'
 import { PageWrapper } from 'app/components/PageWrapper'
-import { PanelCreator } from 'app/features/panels/PanelCreator'
+import { PanelCreator } from 'app/features/panels/Panel'
 import { PanelEditor } from 'app/features/panels/PanelEditor'
 
 export const AdminPage = () => {
